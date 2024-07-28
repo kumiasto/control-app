@@ -1,7 +1,8 @@
 {
   "name": "control-widget",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "homepage": "https://kumiasto.github.io/control-app/",
   "type": "module",
   "scripts": {
     "dev": "vite",
