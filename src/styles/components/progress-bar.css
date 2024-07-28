@@ -1,0 +1,16 @@
+.progress-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  .progress-item {
+    background-color: #094e95;
+    width: 54px;
+    border-radius: 2px;
+    height: 7px;
+  }
+
+  .active {
+    background-color: var(--color-green);
+  }
+}

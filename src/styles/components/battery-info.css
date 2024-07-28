@@ -1,0 +1,56 @@
+.battery-info {
+  display: flex;
+  align-items: center;
+  background-color: #1b3c67;
+  border: 1px solid #1b3c67;
+  border-radius: 3px;
+  padding: 12px;
+  color: (--color-gray);
+  font-size: 12px;
+
+  p {
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 6px;
+    color: var(--color-gray);
+  }
+
+  .battery-container {
+    width: 13px;
+    height: 20px;
+    border: 2px solid var(--color-gray);
+    border-radius: 4px;
+    position: relative;
+    background-color: transparent;
+
+    svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+  }
+
+  .battery-cap {
+    width: 50%;
+    height: 2px;
+    background-color: lightgray;
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px 2px 0 0;
+  }
+  .battery-indicator {
+    width: 100%;
+    height: 0;
+    background-color: var(--color-green);
+    position: absolute;
+    bottom: 0;
+    transition: height 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,70 @@
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 3px 4px;
+  border-radius: 12px;
+
+  input {
+    appearance: none;
+    min-width: 48px;
+    min-height: 22px;
+
+    position: relative;
+    background-color: var(--color-gray);
+    border-radius: 12px;
+    border: 1px solid var(--color-gray);
+
+    cursor: pointer;
+    user-select: none;
+
+    &:checked {
+      background-color: var(--color-green);
+      border: 1px solid var(--color-green);
+
+      &::before {
+        content: ' ';
+        transform: translateX(calc(100% + 6px));
+      }
+    }
+
+    &::before {
+      content: ' ';
+      background-color: #fff;
+      width: 20px;
+      height: 20px;
+      transform: translateX(0%);
+      display: block;
+      position: absolute;
+      border-radius: 20px;
+      transition: background-color 0.3s, border-color 0.3s;
+      box-shadow: 1px 1px 2px 1px rgba(202, 207, 217, 1);
+    }
+  }
+}
+
+.error {
+  animation: shaking 0.15s 6;
+}
+
+.error-container {
+  background-color: #ff4500;
+}
+
+@keyframes shaking {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0eg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
