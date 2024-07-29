@@ -111,7 +111,7 @@ export const ControlWidget = () => {
             data-testid="add-button"
           />
           <div className="percent-info">
-            {brightnessPower[currentBrightnessLevel]}%
+            <div>{brightnessPower[currentBrightnessLevel]}%</div>
           </div>
           <Button
             icon={<SubtractIcon fill="#fff" width={42} height={42} />}

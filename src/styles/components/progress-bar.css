@@ -2,6 +2,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
+  padding-left: 24px;
 
   .progress-item {
     background-color: #094e95;
