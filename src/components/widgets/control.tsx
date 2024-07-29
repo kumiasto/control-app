@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import * as React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AddIcon from '../../assets/add.svg?react';
 import SubtractIcon from '../../assets/subtract.svg?react';
 import {
@@ -10,81 +10,28 @@ import {
   toggleFlashing,
   toggleNightVision,
 } from '../../redux/slice/configSlice';
-import { RootStateType } from '../../redux/store';
 import '../../styles/widgets/control.css';
 import BatteryInfo from '../battery-info';
 import { Button } from '../button';
 import { ProgressBar } from '../progress-bar';
 import { Switch } from '../switch';
+import useConfigData from '../../hooks/use-config-data';
+import useSwitchesError from '../../hooks/use-switches-error';
+
+const LOW_BRIGHTNESS = 1;
+const MAX_BRIGHTNESS = 100;
+const brightnessPower = [1, 3, 10, 30, 100];
 
 export const ControlWidget = () => {
+  const { duskTillDawn, nightVision, flashing, brightness, timeLeft } =
+    useConfigData();
   const dispatch = useDispatch();
-  const configSwitchOptions = useSelector<
-    RootStateType,
-    Record<keyof RootStateType['configSwitchOptions'], boolean>
-  >((state) => state.configSwitchOptions);
+  const { dispatchError, errorState, initialState } = useSwitchesError();
+  const formRef = React.useRef<HTMLFormElement>(null);
 
-  const { duskTillDawn, nightVision, flashing } = configSwitchOptions;
-
-  const brightness = useSelector<RootStateType, number>(
-    (state) => state.brightness
-  );
-  const timeLeft = useSelector<RootStateType, number>(
-    (state) => state.timeLeft
-  );
-
-  const initialState = {
-    duskTillDawn: { count: 0, error: false },
-    nightVision: { count: 0, error: false },
-    flashing: { count: 0, error: false },
-  };
-
-  type Action =
-    | { type: 'increment'; key: keyof typeof initialState }
-    | { type: 'setError'; key: keyof typeof initialState; error: boolean }
-    | { type: 'resetError'; key: keyof typeof initialState };
-
-  const reducer = (state: typeof initialState, action: Action) => {
-    switch (action.type) {
-      case 'increment':
-        return {
-          ...state,
-          [action.key]: {
-            ...state[action.key],
-            count: state[action.key].count + 1,
-          },
-        };
-      case 'setError':
-        return {
-          ...state,
-          [action.key]: {
-            ...state[action.key],
-            error: action.error,
-          },
-        };
-      case 'resetError':
-        return {
-          ...state,
-          [action.key]: {
-            ...state[action.key],
-            error: false,
-          },
-        };
-      default:
-        return state;
-    }
-  };
-
-  const [errorState, dispatchError] = React.useReducer(reducer, initialState);
-
-  const LOW_BRIGHTNESS = 1;
-  const MAX_BRIGHTNESS = 100;
-  const brightnessPower = [1, 3, 10, 30, 100];
-  const currentBrightnesLevel = brightnessPower.findIndex(
+  const currentBrightnessLevel = brightnessPower.findIndex(
     (val) => val === brightness
   );
-
-  const formRef = React.useRef<HTMLFormElement>(null);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +53,6 @@ export const ControlWidget = () => {
   ) => {
     if (key) {
       dispatchError({ type: 'increment', key });
-      // Symulacja bledu - zapewne w aplikacji produkcyjnej z prawdziwym backendem uzywane jest cos co ulatiwa przechwytywanie bledow. Tutaj juz nie chcialem komplikować i zrobilem to recznie :)
 
       try {
         await toggleAction();
@@ -140,52 +86,52 @@ export const ControlWidget = () => {
 
   return (
     <form
-      className='control-widget'
+      className="control-widget"
       onSubmit={onSubmit}
       ref={formRef}
-      data-testid='form'
+      data-testid="form"
     >
-      <div className='title-container'>
+      <div className="title-container">
         <p>THR08</p>
-        <ProgressBar steps={5} currentStep={currentBrightnesLevel} />
+        <ProgressBar steps={5} currentStep={currentBrightnessLevel} />
       </div>
-      <div className='control-panel'>
-        <div className='button-container'>
+      <div className="control-panel">
+        <div className="button-container">
           <Button
-            icon={<AddIcon fill='#fff' width={42} height={42} />}
-            className='add-button'
+            icon={<AddIcon fill="#fff" width={42} height={42} />}
+            className="add-button"
             disabled={brightness === MAX_BRIGHTNESS}
             onClick={() =>
               handleChange(() =>
                 dispatch(
-                  setBrightness(brightnessPower[currentBrightnesLevel + 1])
+                  setBrightness(brightnessPower[currentBrightnessLevel + 1])
                 )
               )
             }
-            data-testid='add-button'
+            data-testid="add-button"
           />
-          <div className='percent-info'>
-            {brightnessPower[currentBrightnesLevel]}%
+          <div className="percent-info">
+            {brightnessPower[currentBrightnessLevel]}%
           </div>
           <Button
-            icon={<SubtractIcon fill='#fff' width={42} height={42} />}
-            className='subtract-button'
+            icon={<SubtractIcon fill="#fff" width={42} height={42} />}
+            className="subtract-button"
             disabled={brightness === LOW_BRIGHTNESS}
             onClick={() =>
               handleChange(() =>
                 dispatch(
-                  setBrightness(brightnessPower[currentBrightnesLevel - 1])
+                  setBrightness(brightnessPower[currentBrightnessLevel - 1])
                 )
               )
             }
-            data-testid='subtract-button'
+            data-testid="subtract-button"
           />
         </div>
-        <div className='switch-container'>
+        <div className="switch-container">
           <BatteryInfo batteryLevel={timeLeft} />
           <Switch
-            id='nightVision'
-            label='Night Vision'
+            id="nightVision"
+            label="Night Vision"
             onChange={() =>
               handleChange(() => dispatch(toggleNightVision()), 'nightVision')
             }
@@ -193,8 +139,8 @@ export const ControlWidget = () => {
             error={errorState.nightVision.error}
           />
           <Switch
-            id='duskTillDawn'
-            label='Dusk Till Dawn'
+            id="duskTillDawn"
+            label="Dusk Till Dawn"
             onChange={() =>
               handleChange(() => dispatch(toggleDuskTillDawn()), 'duskTillDawn')
             }
@@ -202,8 +148,8 @@ export const ControlWidget = () => {
             error={errorState.duskTillDawn.error}
           />
           <Switch
-            id='flashing'
-            label='Flashing'
+            id="flashing"
+            label="Flashing"
             onChange={() =>
               handleChange(() => dispatch(toggleFlashing()), 'flashing')
             }
