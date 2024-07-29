@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import '../styles/components/progress-bar.css';
 
@@ -9,7 +8,7 @@ type ProgressBarProps = {
 
 export const ProgressBar = ({ steps, currentStep }: ProgressBarProps) => {
   return (
-    <div className='progress-bar'>
+    <div className="progress-bar">
       {Array.from(Array(steps)).map((_, index) => (
         <div
           key={index + currentStep}
@@ -17,7 +16,7 @@ export const ProgressBar = ({ steps, currentStep }: ProgressBarProps) => {
             'progress-item',
             currentStep >= index && 'active',
           ])}
-          data-testid='progress-item'
+          data-testid="progress-item"
         />
       ))}
     </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import { ComponentPropsWithoutRef, MouseEvent, ReactNode } from 'react';
 import '../styles/components/button.css';
@@ -28,11 +27,11 @@ export const Button = ({
       disabled={disabled}
       onClick={onClick}
       title={title}
-      data-testid='button'
+      data-testid="button"
       {...props}
     >
-      {Boolean(label) && <div className='label'>{label}</div>}
-      {Boolean(icon) && <div className='icon'>{icon}</div>}
+      {Boolean(label) && <div className="label">{label}</div>}
+      {Boolean(icon) && <div className="icon">{icon}</div>}
     </button>
   );
 };
